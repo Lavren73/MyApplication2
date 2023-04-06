@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.lav.myapplication'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.lav.myapplication"
@@ -30,6 +30,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildToolsVersion '33.0.1'
 }
 
 dependencies {

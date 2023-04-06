@@ -1,0 +1,8 @@
+package com.lav.myapplication.domain
+
+class GetShopListUseCase(private val shopListRepository: ShopListRepository) {
+
+    fun getShopList():List<ShopItem> {
+        return shopListRepository.getShopList()
+    }
+}
