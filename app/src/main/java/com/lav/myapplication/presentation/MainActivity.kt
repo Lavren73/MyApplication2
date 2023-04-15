@@ -1,13 +1,17 @@
 package com.lav.myapplication.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lav.myapplication.R
 import com.lav.myapplication.domain.ShopItem
+import com.sumin.shoppinglist.presentation.ShopItemActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +24,13 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.shopList.observe(this) {
-            shopListAdapter.shopList = it
+            shopListAdapter.submitList(it)
+        }
+        val buttonAddItem = findViewById<FloatingActionButton>(R.id.button_add_shop_item)
+        buttonAddItem.setOnClickListener{
+            val intent = Intent(this, ShopItemActivity::class.java)
+            intent.putExtra("extra_mode", "mode_add")
+            startActivity(intent)
         }
     }
 
@@ -57,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = shopListAdapter.shopList[viewHolder.adapterPosition]
+                val item = shopListAdapter.currentList[viewHolder.adapterPosition]
                 viewModel.deleteShopItem(item)
             }
         }
@@ -68,6 +78,9 @@ class MainActivity : AppCompatActivity() {
     private fun setupClickListener() {
         shopListAdapter.onShopItemClickListener = {
             Log.d("MainActivity", it.toString())
+            val intent = Intent(this, ShopItemActivity::class.java)
+            intent.putExtra("extra_mode", "mode_edit")
+            startActivity(intent)
         }
     }
 
