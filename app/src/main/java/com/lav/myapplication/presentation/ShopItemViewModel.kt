@@ -76,7 +76,7 @@ class ShopItemViewModel : ViewModel() {
     }
 
     private fun validateInput(name: String, count: Int): Boolean {
-        val result = true
+        var result = true
         if (name.isBlank()) {
             _errorInputName.value = true
             result = false
