@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.lav.myapplication.R
@@ -29,6 +30,11 @@ class ShopItemFragment : Fragment() {
     private var screenMode: String = MODE_UNKNOWN
     private var shopItemId: Int = UNDERFINED_ID
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        parseParams()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,7 +45,6 @@ class ShopItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        parseParams()
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         initViews(view)
         addTextChangeListeners()
@@ -129,7 +134,7 @@ class ShopItemFragment : Fragment() {
             throw RuntimeException("Unknown screen mode $mode")
         }
         screenMode = mode
-        if (args.containsKey(SHOP_ITEM_ID)) {
+        if (!args.containsKey(SHOP_ITEM_ID)) {
             throw RuntimeException("Paran shop item id is not absent")
         }
         shopItemId = args.getInt(SHOP_ITEM_ID, UNDERFINED_ID)
@@ -145,11 +150,11 @@ class ShopItemFragment : Fragment() {
 
     companion object {
 
-        const val SCREEN_MODE = "extra_mode"
-        const val SHOP_ITEM_ID = "extra_shop_item_id"
-        const val MODE_EDIT = "mode_edit"
-        const val MODE_ADD = "mode_add"
-        const val MODE_UNKNOWN = ""
+        private const val SCREEN_MODE = "extra_mode"
+        private const val SHOP_ITEM_ID = "extra_shop_item_id"
+        private const val MODE_EDIT = "mode_edit"
+        private const val MODE_ADD = "mode_add"
+        private const val MODE_UNKNOWN = ""
 
         fun newInstanceAddItem(): ShopItemFragment {
             return ShopItemFragment().apply {
@@ -166,19 +171,6 @@ class ShopItemFragment : Fragment() {
                     putInt(SHOP_ITEM_ID, shopItemId)
                 }
             }
-        }
-
-        fun newIntentAddItem(context: Context): Intent {
-            val intent = Intent(context, ShopItemActivity::class.java)
-            intent.putExtra(SCREEN_MODE, MODE_ADD)
-            return intent
-        }
-
-        fun newIntentEditItem(context: Context, shopItemId: Int): Intent {
-            val intent = Intent(context, ShopItemActivity::class.java)
-            intent.putExtra(SCREEN_MODE, MODE_EDIT)
-            intent.putExtra(SHOP_ITEM_ID, shopItemId)
-            return intent
         }
     }
 

@@ -9,7 +9,7 @@ import com.lav.myapplication.domain.ShopItem.Companion.UNDERFINED_ID
 
 class ShopItemActivity : AppCompatActivity() {
 
-    private var screenMode  = MODE_UNKNOWN
+    private var screenMode = MODE_UNKNOWN
     private var shopItemId = UNDERFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
