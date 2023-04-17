@@ -1,7 +1,6 @@
 package com.lav.myapplication.presentation
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.lav.myapplication.R
@@ -20,6 +18,7 @@ import com.lav.myapplication.domain.ShopItem.Companion.UNDERFINED_ID
 class ShopItemFragment : Fragment() {
 
     private lateinit var viewModel: ShopItemViewModel
+    private lateinit var onEditingFinishedListener: OnEditingFinishedListener
 
     private lateinit var tilName: TextInputLayout
     private lateinit var tilCount: TextInputLayout
@@ -29,6 +28,20 @@ class ShopItemFragment : Fragment() {
 
     private var screenMode: String = MODE_UNKNOWN
     private var shopItemId: Int = UNDERFINED_ID
+
+    interface OnEditingFinishedListener {
+
+        fun onEditingFinished()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnEditingFinishedListener) {
+            onEditingFinishedListener = context
+        } else {
+            throw RuntimeException("Activity must implemnt OnEditingFinishedListener")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,6 +173,7 @@ class ShopItemFragment : Fragment() {
             return ShopItemFragment().apply {
                 arguments = Bundle().apply {
                     putString(SCREEN_MODE, MODE_ADD)
+                    putInt(SHOP_ITEM_ID, shopItemId)
                 }
             }
         }
